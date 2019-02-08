@@ -13,11 +13,18 @@ def self.column_names
   DB[:conn].execute(sql).collect {|hash| hash["name"]}
 end
 
-
 def initialize(attributes = nil)
   unless attributes.nil? 
     attributes.each {|k, v| send("#{k}=", v)}
   end
+end
+
+def table_name_for_insert
+  self.class.table_name
+end
+
+def col_names_for_insert
+  self.class.column_names.delete_if {|col| col == "id"}.join(", ")
 end
 
 end
