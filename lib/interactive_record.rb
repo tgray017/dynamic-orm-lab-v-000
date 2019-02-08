@@ -29,8 +29,8 @@ end
 
 def values_for_insert
   values = []
-  self.column_names.each {|col_name| values << send("#{col_name}") unless send("#{col_name}").nil?}
-  values
+  self.class.column_names.each {|col_name| values << send("#{col_name}") unless send("#{col_name}").nil?}
+  values.collect {|v| "\'#{v}\'"}.join(', ')
 end
 
 end
