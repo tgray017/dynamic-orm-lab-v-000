@@ -13,8 +13,8 @@ def self.column_names
   DB[:conn].execute(sql).collect {|hash| hash["name"]}
 end
 
-def initialize(attributes = nil)
-    attributes.each {|k, v| send("#{k}=", v)} unless attributes.nil? 
+def initialize(attributes={})
+    attributes.each {|k, v| self.send("#{k}=", v)}
 end
 
 def table_name_for_insert
@@ -27,8 +27,10 @@ end
 
 def values_for_insert
   values = []
-  self.class.column_names.each {|col_name| values << send("#{col_name}") unless send("#{col_name}").nil?}
-  values.collect {|v| "\'#{v}\'"}.join(', ')
+  self.class.column_names.each do |col_name|
+    values << "'#{send(col_name)}'" unless send(col_name).nil?
+  end
+  values.join(", ")
 end
 
 def save
