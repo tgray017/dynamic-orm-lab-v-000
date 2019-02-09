@@ -14,9 +14,7 @@ def self.column_names
 end
 
 def initialize(attributes = nil)
-  unless attributes.nil? 
-    attributes.each {|k, v| send("#{k}=", v)}
-  end
+    attributes.each {|k, v| send("#{k}=", v)} unless attributes.nil? 
 end
 
 def table_name_for_insert
